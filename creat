@@ -1,0 +1,34 @@
+... 
+// Get a reference to the XmlRpcClient 
+String url = "http://[[cds server host]]:[[cds server port]]/subscriber/xml_rpc.do"; 
+XmlRpcClientLite client = new XmlRpcClientLite(url); 
+ 
+// Retrieve the ApiContext Hashtable from the HttpSession 
+Hashtable apiContext = (Hashtable) session.getAttribute("API_CONTEXT"); 
+ 
+// Set up the input parameters 
+Vector parameters = new Vector(); 
+Hashtable ht = new Hashtable(); 
+ht.put("apiContext", apiContext); 
+ht.put("contentId", new Integer(1001)); 
+ht.put("campaignId", new Integer(1000)); 
+ht.put(“isSkipTrial? Boolean.TRUE); 
+parameters.addElement(ht); 
+ 
+// Send the request to Content Delivery Server 
+Hashtable response = (Hashtable) client.execute("ContentHandler.purchaseContent", parameters); 
+ 
+// Evaluate the response 
+String errorCode = (String)response.get("response_code"); 
+if (!errorCode.equals("1")) 
+{ 
+  // Handle Error 
+  System.out.println((String)response.get("response_message")); 
+  ... 
+} 
+else 
+{ 
+  // Purchase successful 
+  ... 
+} 
+... 
